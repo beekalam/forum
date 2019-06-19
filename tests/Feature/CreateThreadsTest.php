@@ -17,15 +17,15 @@ class CreateThreadsTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $this->expectException(AuthenticationException::class);
-        $thread = factory(Thread::class)->make();
+        $thread = make(Thread::class);
         $this->post('/threads', $thread->toArray());
     }
 
     /** @test */
     function an_authenticated_user_can_create_new_forum_threads()
     {
-        $this->actingAs($user = factory(User::class)->create());
-        $thread = factory(Thread::class)->make();
+        $this->signIn();
+        $thread = make(Thread::class);
         $this->post('/threads', $thread->toArray());
 
         $this->get($thread->path())

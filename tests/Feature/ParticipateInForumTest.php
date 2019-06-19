@@ -25,9 +25,9 @@ class ParticipateInForumTest extends TestCase
     function an_authenticated_user_may_participate_in_forum_threads()
     {
         // $this->withoutExceptionHandling();
-        $this->be($user = factory(User::class)->create());
-        $thread = factory(Thread::class)->create();
-        $reply = factory(Reply::class)->make();
+        $this->actingAs($user = create(User::class));
+        $thread = create(Thread::class);
+        $reply = make(Reply::class);
         $this->post($thread->path() . "/replies", $reply->toArray());
 
         $this->get($thread->path())
