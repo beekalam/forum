@@ -19,9 +19,9 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('secret')
         ]);
 
-        $threads = factory(\App\Thread::class,50)->create();
+        $threads = factory(\App\Thread::class,10)->create();
         $threads->each(function($thread){
-            factory(Reply::class,10)->create(['thread_id' => $thread->id]);
+            factory(Reply::class,5)->create(['thread_id' => $thread->id]);
         });
 
     }
