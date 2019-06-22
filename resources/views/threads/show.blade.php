@@ -7,8 +7,20 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <a href="{{ route('profile', $thread->creator) }}"> {{ $thread->creator->name }} </a> posted:
-                        {{ $thread->title }}
+                        <div class="level">
+                            <span class="flex">
+                                <a href="{{ route('profile', $thread->creator) }}"> {{ $thread->creator->name }} </a> posted:
+                                {{ $thread->title }}
+                            </span>
+
+                            @if(Auth::check())
+                                <form action="{{ $thread->path() }}" method="post">
+                                    {{ csrf_field() }}
+                                    {{ method_field('DELETE') }}
+                                    <button type="submit" class="btn btn-primary">Delete</button>
+                                </form>
+                            @endif
+                        </div>
                     </div>
 
                     <div class="card-body">
