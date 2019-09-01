@@ -22,6 +22,12 @@
         body{padding-bottom:100px;}
         .level { display:flex; align-items:center;}
         .flex{flex:1;}
+        .btn-group-xs > .btn, .btn-xs {
+            padding: .25rem .4rem;
+            font-size: .875rem;
+            line-height: .5;
+            border-radius: .2rem;
+        }
     </style>
 </head>
 <body>

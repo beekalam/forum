@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Reply;
 use App\Thread;
 use App\User;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -16,8 +15,8 @@ class ParticipateInForumTest extends TestCase
     /** @test */
     function unauthenticated_users_may_not_add_replies()
     {
-        $this->post( "/threads/some-channel/1/replies",[])
-            ->assertRedirect('/login');
+        $this->post("/threads/some-channel/1/replies", [])
+             ->assertRedirect('/login');
     }
 
     /** @test */
@@ -38,8 +37,33 @@ class ParticipateInForumTest extends TestCase
         $this->signIn();
 
         $thread = create(Thread::class);
-        $reply = make(Reply::class,['body' => null]);
+        $reply = make(Reply::class, ['body' => null]);
         $this->post($thread->path() . "/replies", $reply->toArray())
-            ->assertSessionHasErrors('body');
+             ->assertSessionHasErrors('body');
+    }
+
+    /** @test */
+    function unauthenticated_users_can_not_delete_replies()
+    {
+        // $this->withoutExceptionHandling();
+        $reply = create('App\Reply');
+        $this->delete("/replies/{$reply->id}")
+             ->assertRedirect("login");
+
+        $this->signIn()
+             ->delete("/replies/{$reply->id}")
+             ->assertStatus(403);
+
+    }
+
+    /** @test */
+    function authorized_user_can_delete_replies()
+    {
+        $this->signIn();
+        $reply = create('App\Reply',['user_id' => auth()->id()]);
+        $this->delete("/replies/{$reply->id}")
+            ->assertStatus(302);
+
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
     }
 }
