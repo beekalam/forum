@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Reply;
 use App\Thread;
-use Illuminate\Http\Request;
 
 class RepliesController extends Controller
 {
@@ -85,9 +84,10 @@ class RepliesController extends Controller
      * @param \App\Reply               $reply
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Reply $reply)
+    public function update(Reply $reply)
     {
-        //
+        $this->authorize('update',$reply);
+        $reply->update( request(['body']));
     }
 
     /**
@@ -102,4 +102,6 @@ class RepliesController extends Controller
         $reply->delete();
         return back();
     }
+
+
 }

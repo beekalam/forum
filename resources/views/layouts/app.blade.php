@@ -28,6 +28,9 @@
             line-height: .5;
             border-radius: .2rem;
         }
+        [v-cloak]{
+            display:none;
+        }
     </style>
 </head>
 <body>

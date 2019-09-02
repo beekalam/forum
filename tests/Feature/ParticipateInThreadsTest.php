@@ -8,7 +8,7 @@ use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ParticipateInForumTest extends TestCase
+class ParticipateInThreadsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -60,10 +60,40 @@ class ParticipateInForumTest extends TestCase
     function authorized_user_can_delete_replies()
     {
         $this->signIn();
-        $reply = create('App\Reply',['user_id' => auth()->id()]);
+        $reply = create('App\Reply', ['user_id' => auth()->id()]);
         $this->delete("/replies/{$reply->id}")
-            ->assertStatus(302);
+             ->assertStatus(302);
 
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+    }
+
+
+    /** @test */
+    function unauthenticated_users_can_not_update_replies()
+    {
+        // $this->withoutExceptionHandling();
+        $reply = create('App\Reply');
+        $this->patch("/replies/{$reply->id}")
+             ->assertRedirect("login");
+
+        $this->signIn()
+             ->patch("/replies/{$reply->id}")
+             ->assertStatus(403);
+
+    }
+
+
+    /** @test */
+    function authorized_users_can_update_replies()
+    {
+
+        $this->signIn();
+        $reply = create('App\Reply', ['user_id' => auth()->id()]);
+
+        $updatedReply = 'You been changed, fool!';
+        $this->patch("/replies/{$reply->id}", ['body' => $updatedReply]);
+
+
+        $this->assertDatabaseHas('replies', ['id' => $reply->id, 'body' => $updatedReply]);
     }
 }
