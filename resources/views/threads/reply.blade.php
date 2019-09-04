@@ -12,14 +12,9 @@
 
 
                 <div>
-                    <form action="/replies/{{ $reply->id }}/favorites" method="post">
-                        {{ csrf_field() }}
-                        <button type="submit"
-                                class="btn btn-primary btn-sm" {{ $reply->isFavorited() ? 'disabled':'' }}>
-                            {{ $reply->favorites_count }} {{ str_plural('Favorite',$reply->favorites_count) }}
-                        </button>
-                    </form>
+                    <favorite :reply="{{ $reply }}"></favorite>
                 </div>
+
             </div>
         </div>
 

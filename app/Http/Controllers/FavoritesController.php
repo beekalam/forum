@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Favorite;
 use App\Reply;
-use Illuminate\Support\Facades\DB;
 
 class FavoritesController extends Controller
 {
@@ -21,5 +19,10 @@ class FavoritesController extends Controller
         $reply->favorite();
 
         return back();
+    }
+
+    public function destroy(Reply $reply)
+    {
+        $reply->unfavorite();
     }
 }
