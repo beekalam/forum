@@ -10,10 +10,11 @@
                     said {{ $reply->created_at->diffForHumans() }} ...
                 </h6>
 
-
-                <div>
-                    <favorite :reply="{{ $reply }}"></favorite>
-                </div>
+                @if(Auth::check())
+                    <div>
+                        <favorite :reply="{{ $reply }}"></favorite>
+                    </div>
+                @endif
 
             </div>
         </div>
@@ -28,7 +29,7 @@
                 <button class="btn btn-xs btn-link" @click="editing = false">Cancel</button>
             </div>
 
-            <div v-else v-text="body"> </div>
+            <div v-else v-text="body"></div>
         </div>
 
         @can('update',$reply)
