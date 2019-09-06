@@ -21,13 +21,18 @@ window.Vue = require('vue');
 
 window.events = new Vue();
 
+Vue.prototype.authorize = function (handler) {
+    let user = window.App.user;
+    return user ? handler(user) : false;
+};
+
 window.flash = function (message) {
     window.events.$emit('flash', message);
 };
 
 Vue.component('flash', require('./components/Flash.vue').default);
-Vue.component('reply', require('./components/Reply.vue').default);
-
+// Vue.component('reply', require('./components/Reply.vue').default);
+Vue.component('thread-view', require('./pages/Thread').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
