@@ -8,7 +8,7 @@
                        class="flex"
                        v-text="data.owner.name">
                     </a>
-                    said {{ data.created_at }}
+                    said <span v-text="ago"></span>
                 </h6>
 
                 <div v-if="signedIn">
@@ -43,6 +43,7 @@
 
 <script>
     import Favorite from "./Favorite";
+    import moment from "moment";
 
     export default {
         props: ['data'],
@@ -63,10 +64,14 @@
             },
             canUpdate() {
                 return this.authorize(user => this.data.user_id == user.id);
-            }
+            },
+            ago() {
+                return moment(this.data.created_at).fromNow() + "...";
+            },
         },
 
         methods: {
+
             update() {
                 axios.patch('/replies/' + this.data.id, {
                     body: this.body

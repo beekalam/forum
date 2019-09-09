@@ -1,13 +1,13 @@
 <template>
 
-    <div>
+    <div class="mt-2">
         <div v-if="signedIn">
             <div class="form-group">
-        <textarea name="body" id="body" cols="30" rows="10"
-                  class="form-control"
-                  placeholder="Have something to say?"
-                  required
-                  v-model="body"></textarea>
+                <textarea name="body" id="body" cols="30" rows="10"
+                          class="form-control"
+                          placeholder="Have something to say?"
+                          required
+                          v-model="body"></textarea>
             </div>
             <button type="submit"
                     class="btn btn-primary"
@@ -24,7 +24,6 @@
 
 <script>
     export default {
-        props: ['endpoint'],
         data() {
             return {
                 body: '',
@@ -40,7 +39,7 @@
             addReply() {
                 console.log('in addreply');
 
-                axios.post(this.endpoint, {body: this.body})
+                axios.post(location.pathname + "/replies", {body: this.body})
                     .then(({data}) => {
                         this.body = '';
 
