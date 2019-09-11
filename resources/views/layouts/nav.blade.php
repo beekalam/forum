@@ -29,6 +29,7 @@
                         @endif
 
                         <a href="/threads?popular=1" class="dropdown-item">Popular Threads</a>
+                        <a href="/threads?unanswered=1" class="dropdown-item">Unanswered Threads</a>
                     </div>
 
 
