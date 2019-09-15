@@ -4,8 +4,8 @@ namespace Tests\Unit;
 
 use App\Thread;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use Route;
+use Tests\TestCase;
 
 class SubscribeToThreadsTest extends TestCase
 {
@@ -23,9 +23,23 @@ class SubscribeToThreadsTest extends TestCase
 
         $thread->addReply([
             'user_id' => auth()->id(),
-            'body' => 'Some Reply here'
+            'body'    => 'Some Reply here'
         ]);
 
+    }
 
+    /** @test */
+    function a_user_can_unsubscribe_from_a_threads()
+    {
+$this->withoutExceptionHandling();
+        $this->signIn();
+
+        $thread = create(Thread::class);
+
+        $thread->subscribe();
+
+        $this->delete($thread->path() . '/subscriptions');
+
+        $this->assertCount(0, $thread->subscriptions);
     }
 }
